@@ -11,6 +11,27 @@ statements
 statement
     -> set_var          {% id %}
     | print_statement   {% id %}
+    | comment           {% id %}
+    | while_loop        {% id %}
+
+comment -> "<<" _ expression _ ">>" {%
+        data => {
+            return {
+                type: "comment",
+                comment: data[2]
+            }
+        }
+    %}
+
+while_loop -> "while" __ bin_expr _ "<" _ "\r\n" statements _ "\r\n" _ ">" {%
+            data => {
+                return {
+                    type: "while_loop",
+                    condition: data[2],
+                    body: data[7]
+                }
+            }
+        %}
 
 print_statement -> "print:" __ expression {%
             data => {
@@ -42,10 +63,15 @@ bin_expr
         %}
 
 operator
-    -> "+" {% id %}
-    |  "-" {% id %}
-    |  "*" {% id %}
-    |  "/" {% id %}
+    -> "+"  {% id %}
+    |  "-"  {% id %}
+    |  "*"  {% id %}
+    |  "/"  {% id %}
+    |  ">"  {% id %}
+    |  "<"  {% id %}
+    |  ">=" {% id %}
+    |  "<=" {% id %}
+    |  "="  {% id %}
 
 set_var -> "set" __ str _ "->" _ expression {%
         data => {
