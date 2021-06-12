@@ -9,7 +9,8 @@ statements
         %}
 
 statement
-    -> set_var          {% id %}
+    -> make_var         {% id %}
+    | set_var           {% id %}
     | print_statement   {% id %}
     | comment           {% id %}
     | while_loop        {% id %}
@@ -23,7 +24,7 @@ comment -> "<<" _ expression _ ">>" {%
         }
     %}
 
-while_loop -> "while" __ bin_expr _ "<" _ "\r\n" statements _ "\r\n" _ ">" {%
+while_loop -> "while" __ bin_expr _ "(" _ "\r\n" statements _ "\r\n" _ ")" {%
             data => {
                 return {
                     type: "while_loop",
@@ -48,7 +49,7 @@ expression
 
 unary_expr
     -> num           {% id %}
-    | str            {% id %}
+    | identifier            {% id %}
 
 bin_expr
     -> unary_expr _ operator _ expression {%
@@ -73,17 +74,29 @@ operator
     |  "<=" {% id %}
     |  "="  {% id %}
 
-set_var -> "set" __ str _ "->" _ expression {%
+make_var -> "make" __ identifier _ "->" _ expression {%
         data => {
             return {
-                type: "variable_assignment",
-                name: data[2].join(''),
+                type: "make_variable",
+                name: data[2],
                 value: data[6]
             }
         }
     %}
 
-str -> [a-z]:+ {% id %}
+set_var -> "set" __ identifier _ "->" _ expression {%
+        data => {
+            return {
+                type: "set_variable",
+                name: data[2],
+                value: data[6]
+            }
+        }
+    %}
+
+identifier -> [a-z]:+ {%
+        data => data[0].join('')
+    %}
 
 num
     -> digits "." digits {%

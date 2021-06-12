@@ -14,7 +14,7 @@ const main = async () => {
         await fs.writeFile(out_file, JSON.stringify(parser.results[0], null, 4));
         console.log(`****Output written to ${out_file}****`);
     } catch(e) {
-        console.error(`****Error****\n${e.message}`)
+        console.error(`****Error****\n${e.message}`);
     }
 }
 
