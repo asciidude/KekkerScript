@@ -1,0 +1,76 @@
+program -> statements {% id %}
+
+statements
+    -> _ statement _ {%
+            data => [data[1]]
+        %}
+    |  _ statement _ "\r\n" statements {%
+            data => [data[1], ...data[4]]
+        %}
+
+statement
+    -> set_var          {% id %}
+    | print_statement   {% id %}
+
+print_statement -> "print:" __ expression {%
+            data => {
+                return {
+                    type: "print_statement",
+                    expression: data[2]
+                }
+            }
+        %}
+
+expression
+    -> bin_expr      {% id %}
+    | unary_expr     {% id %}
+
+unary_expr
+    -> num           {% id %}
+    | str            {% id %}
+
+bin_expr
+    -> unary_expr _ operator _ expression {%
+            data => {
+                return {
+                    type: "binary_expression",
+                    operand_left: data[0],
+                    operator: data[2],
+                    operand_right: data[4]
+                }
+            }
+        %}
+
+operator
+    -> "+" {% id %}
+    |  "-" {% id %}
+    |  "*" {% id %}
+    |  "/" {% id %}
+
+set_var -> "set" __ str _ "->" _ expression {%
+        data => {
+            return {
+                type: "variable_assignment",
+                name: data[2].join(''),
+                value: data[6]
+            }
+        }
+    %}
+
+str -> [a-z]:+ {% id %}
+
+num
+    -> digits "." digits {%
+            data => Number(data[0] + "." + data[2])
+        %}
+    | digits {%
+            data => Number(data[0])
+        %}
+
+digits -> [0-9]:+ {%
+        data => data[0].join('')
+    %}
+
+
+_ -> [ ]:*
+__ -> [ ]:+
