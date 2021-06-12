@@ -1,6 +1,6 @@
 ﻿# KekkerScript Documentation
-For now, our documentation will be held on<br>
-GitHub. We will, later on in the future, migrate to<br>
+For now, our documentation will be held on
+GitHub. We will, later on in the future, migrate to
 [ReadTheDocs](https://www.readthedocs.io)
 
 KekkerScript is a transpiler that transpiles to JavaScript.
