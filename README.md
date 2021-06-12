@@ -28,6 +28,6 @@ KekkerScript is a transpiler that transpiles to JavaScript.
 
 (examples will be shown)<br>
 `set variable -> 12.5`: assign a variable to a value, this is how you set and make new variables<br>
-`print: hello world`: print given parameters to console<br>
+`print: hello`: print given parameters to console<br>
 `while variable <= 12.5`: while a condition is true, loop over body. newlines required for body<br>
 `<< commentnospacesorsymbols >>`: comments are currently not very conventional, they will be transpiled but no spaces or symbols are allowed<br>
