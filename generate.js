@@ -54,8 +54,8 @@ const expression_gen = (expression) => {
 
     if(typeof expression === 'object') {
         if(expression.type === 'binary_expression') {
-            if(!Object.values(translated_operators).includes(expression.operator)) {
-                throw TypeError(`ERR! - ${expression.operator} does not exist or is not translated`);
+            if(!lookup(expression.operator)) {
+                throw TypeError(`ERR!: ${expression.operator} does not exist or is not translated`);
             }
 
             return `${expression_gen(expression.operand_left, declared_vars)} ${translated_operators[expression.operator]} ${expression_gen(expression.operand_right, declared_vars)}`;
@@ -63,6 +63,15 @@ const expression_gen = (expression) => {
     } else {
         return expression;
     }
+}
+
+const lookup = async(name) => {
+    for(var i = 0, len = arr.length; i < len; i++) {
+        if(arr[i].key === name )
+            return true;
+    }
+
+    return false;
 }
 
 main();

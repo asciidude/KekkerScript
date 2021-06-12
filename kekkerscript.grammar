@@ -7,6 +7,9 @@ statements
     |  _ statement _ "\r\n" statements {%
             data => [data[1], ...data[4]]
         %}
+    |  _ statement _ "\r\n\r\n" statements {%
+            data => [data[1], ...data[4]]
+        %}
 
 statement
     -> set_var          {% id %}
@@ -23,7 +26,7 @@ comment -> "<<" __ unary_expr __ ">>" {%
         }
     %}
 
-while_loop -> "while" __ bin_expr _ "(" _ "\r\n" statements _ "\r\n" _ ")" {%
+while_loop -> "while" __ expression _ "(" _ "\r\n" statements _ "\r\n" _ ")" {%
             data => {
                 return {
                     type: "while_loop",
@@ -45,10 +48,33 @@ print_statement -> "print:" __ expression {%
 expression
     -> bin_expr      {% id %}
     | unary_expr     {% id %}
+    | boolean        {% id %}
+
+boolean
+    -> true          {% id %}
+    | false          {% id %}
 
 unary_expr
     -> num           {% id %}
     | identifier     {% id %}
+
+true -> true {%
+        data => {
+            return {
+                type: "boolean_expression",
+                expression: Boolean(true)
+            }
+        }
+    %}
+
+false -> false {%
+        data => {
+            return {
+                type: "boolean_expression",
+                expression: Boolean(false)
+            }
+        }
+    %}
 
 bin_expr
     -> unary_expr _ operator _ expression {%

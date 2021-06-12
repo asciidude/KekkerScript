@@ -13,13 +13,17 @@ var grammar = {
     {"name": "statements", "symbols": ["_", "statement", "_", "statements$string$1", "statements"], "postprocess": 
         data => [data[1], ...data[4]]
                 },
+    {"name": "statements$string$2", "symbols": [{"literal":"\r"}, {"literal":"\n"}, {"literal":"\r"}, {"literal":"\n"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "statements", "symbols": ["_", "statement", "_", "statements$string$2", "statements"], "postprocess": 
+        data => [data[1], ...data[4]]
+                },
     {"name": "statement", "symbols": ["set_var"], "postprocess": id},
     {"name": "statement", "symbols": ["print_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["comment"], "postprocess": id},
     {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
     {"name": "comment$string$1", "symbols": [{"literal":"<"}, {"literal":"<"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "comment$string$2", "symbols": [{"literal":">"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "comment", "symbols": ["comment$string$1", "__", "expression", "__", "comment$string$2"], "postprocess": 
+    {"name": "comment", "symbols": ["comment$string$1", "__", "unary_expr", "__", "comment$string$2"], "postprocess": 
         data => {
             return {
                 type: "comment",
@@ -30,7 +34,7 @@ var grammar = {
     {"name": "while_loop$string$1", "symbols": [{"literal":"w"}, {"literal":"h"}, {"literal":"i"}, {"literal":"l"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "while_loop$string$2", "symbols": [{"literal":"\r"}, {"literal":"\n"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "while_loop$string$3", "symbols": [{"literal":"\r"}, {"literal":"\n"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "while_loop", "symbols": ["while_loop$string$1", "__", "bin_expr", "_", {"literal":"("}, "_", "while_loop$string$2", "statements", "_", "while_loop$string$3", "_", {"literal":")"}], "postprocess": 
+    {"name": "while_loop", "symbols": ["while_loop$string$1", "__", "expression", "_", {"literal":"("}, "_", "while_loop$string$2", "statements", "_", "while_loop$string$3", "_", {"literal":")"}], "postprocess": 
         data => {
             return {
                 type: "while_loop",
@@ -50,8 +54,27 @@ var grammar = {
                 },
     {"name": "expression", "symbols": ["bin_expr"], "postprocess": id},
     {"name": "expression", "symbols": ["unary_expr"], "postprocess": id},
+    {"name": "expression", "symbols": ["boolean"], "postprocess": id},
+    {"name": "boolean", "symbols": ["true"], "postprocess": id},
+    {"name": "boolean", "symbols": ["false"], "postprocess": id},
     {"name": "unary_expr", "symbols": ["num"], "postprocess": id},
     {"name": "unary_expr", "symbols": ["identifier"], "postprocess": id},
+    {"name": "true", "symbols": ["true"], "postprocess": 
+        data => {
+            return {
+                type: "boolean_expression",
+                expression: Boolean(true)
+            }
+        }
+            },
+    {"name": "false", "symbols": ["false"], "postprocess": 
+        data => {
+            return {
+                type: "boolean_expression",
+                expression: Boolean(false)
+            }
+        }
+            },
     {"name": "bin_expr", "symbols": ["unary_expr", "_", "operator", "_", "expression"], "postprocess": 
         data => {
             return {
