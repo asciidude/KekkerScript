@@ -13,18 +13,17 @@ var grammar = {
     {"name": "statements", "symbols": ["_", "statement", "_", "statements$string$1", "statements"], "postprocess": 
         data => [data[1], ...data[4]]
                 },
-    {"name": "statement", "symbols": ["make_var"], "postprocess": id},
     {"name": "statement", "symbols": ["set_var"], "postprocess": id},
     {"name": "statement", "symbols": ["print_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["comment"], "postprocess": id},
     {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
     {"name": "comment$string$1", "symbols": [{"literal":"<"}, {"literal":"<"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "comment$string$2", "symbols": [{"literal":">"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "comment", "symbols": ["comment$string$1", "_", "expression", "_", "comment$string$2"], "postprocess": 
+    {"name": "comment", "symbols": ["comment$string$1", "__", "expression", "__", "comment$string$2"], "postprocess": 
         data => {
             return {
                 type: "comment",
-                comment: data[2]
+                body: data[2]
             }
         }
             },
@@ -74,23 +73,12 @@ var grammar = {
     {"name": "operator$string$2", "symbols": [{"literal":"<"}, {"literal":"="}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "operator", "symbols": ["operator$string$2"], "postprocess": id},
     {"name": "operator", "symbols": [{"literal":"="}], "postprocess": id},
-    {"name": "make_var$string$1", "symbols": [{"literal":"m"}, {"literal":"a"}, {"literal":"k"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "make_var$string$2", "symbols": [{"literal":"-"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
-    {"name": "make_var", "symbols": ["make_var$string$1", "__", "identifier", "_", "make_var$string$2", "_", "expression"], "postprocess": 
-        data => {
-            return {
-                type: "make_variable",
-                name: data[2],
-                value: data[6]
-            }
-        }
-            },
     {"name": "set_var$string$1", "symbols": [{"literal":"s"}, {"literal":"e"}, {"literal":"t"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "set_var$string$2", "symbols": [{"literal":"-"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "set_var", "symbols": ["set_var$string$1", "__", "identifier", "_", "set_var$string$2", "_", "expression"], "postprocess": 
         data => {
             return {
-                type: "set_variable",
+                type: "variable_assignment",
                 name: data[2],
                 value: data[6]
             }

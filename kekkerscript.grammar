@@ -9,17 +9,16 @@ statements
         %}
 
 statement
-    -> make_var         {% id %}
-    | set_var           {% id %}
+    -> set_var          {% id %}
     | print_statement   {% id %}
     | comment           {% id %}
     | while_loop        {% id %}
 
-comment -> "<<" _ expression _ ">>" {%
+comment -> "<<" __ unary_expr __ ">>" {%
         data => {
             return {
                 type: "comment",
-                comment: data[2]
+                body: data[2]
             }
         }
     %}
@@ -49,7 +48,7 @@ expression
 
 unary_expr
     -> num           {% id %}
-    | identifier            {% id %}
+    | identifier     {% id %}
 
 bin_expr
     -> unary_expr _ operator _ expression {%
@@ -74,20 +73,10 @@ operator
     |  "<=" {% id %}
     |  "="  {% id %}
 
-make_var -> "make" __ identifier _ "->" _ expression {%
-        data => {
-            return {
-                type: "make_variable",
-                name: data[2],
-                value: data[6]
-            }
-        }
-    %}
-
 set_var -> "set" __ identifier _ "->" _ expression {%
         data => {
             return {
-                type: "set_variable",
+                type: "variable_assignment",
                 name: data[2],
                 value: data[6]
             }

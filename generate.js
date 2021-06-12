@@ -6,28 +6,34 @@ const main = async() => {
     const out_file = path.basename(f_name, '.ast') + '.js';
     const ast_content = (await fs.readFile(f_name)).toString();
     const ast = JSON.parse(ast_content);
-    await fs.writeFile(out_file, transpile_js(ast));
+    await fs.writeFile(out_file, transpile_js(ast, []));
     console.log(`****Output****\nSuccessfully transpiled! Run file ${out_file}`);
 }
 
+let declared_vars = [];
 const transpile_js = (statements) => {
     const transpiled = [];
 
     for (const statement of statements) {
-        if(statement.type === 'make_variable') {
-            transpiled.push(`let ${statement.name} = ${expression_gen(statement.value)};`);
+        if(statement.type === 'variable_assignment') {
+            if(declared_vars.indexOf(statement.name) === -1) {
+                transpiled.push(`let ${statement.name} = ${expression_gen(statement.value)};`);
+                declared_vars.push(statement.name);
+            } else {
+                transpiled.push(`${statement.name} = ${expression_gen(statement.value)};`);
+            }
         }
 
-        if(statement.type === 'set_variable') {
-            transpiled.push(`${statement.name} = ${expression_gen(statement.value)};`);
-        }
-
-        else if(statement.type === 'print_statement') {
+        if(statement.type === 'print_statement') {
             transpiled.push(`console.log(${expression_gen(statement.expression)});`);
         }
 
-        else if(statement.type === 'while_loop') {
+        if(statement.type === 'while_loop') {
             transpiled.push(`while(${expression_gen(statement.condition)}) {\n${transpile_js(statement.body).split('\n').map(ln => '  ' + ln).join('\n')}\n}`);
+        }
+
+        if(statement.type == 'comment') {
+            transpiled.push(`/* ${statement.body} */`)
         }
     }
 
@@ -52,7 +58,7 @@ const expression_gen = (expression) => {
                 throw TypeError(`ERR! - ${expression.operator} does not exist or is not translated`);
             }
 
-            return `${expression_gen(expression.operand_left)} ${translated_operators[expression.operator]} ${expression_gen(expression.operand_right)}`;
+            return `${expression_gen(expression.operand_left, declared_vars)} ${translated_operators[expression.operator]} ${expression_gen(expression.operand_right, declared_vars)}`;
         }
     } else {
         return expression;
