@@ -1,0 +1,3 @@
+import "sep" as "separator" from "path"
+
+print: separator

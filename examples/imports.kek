@@ -1,0 +1,4 @@
+<< Import PI function from math module (node) and print >>
+import "PI" from "math"
+
+print: PI
