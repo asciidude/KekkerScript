@@ -16,6 +16,7 @@ statement
     | print_statement   {% id %}
     | comment           {% id %}
     | while_loop        {% id %}
+    | return            {% id %}
 
 comment -> "<<" __ unary_expr __ ">>" {%
         data => {
@@ -108,6 +109,35 @@ set_var -> "set" __ identifier _ "->" _ expression {%
             }
         }
     %}
+
+return
+    -> "return:" __ expression {%
+            data => {
+                return {
+                    type: "return_statement",
+                    return_type: "expression",
+                    returned: data[2]
+                }
+            }
+        %}
+    | "return:" __ statement {%
+            data => {
+                return {
+                    type: "return_statement",
+                    return_type: "statement",
+                    returned: data[2]
+                }
+            }
+        %}
+    | "return:" __ "none" {%
+            data => {
+                return {
+                    type: "return_statement",
+                    return_type: "statement",
+                    returned: null
+                }
+            }
+        %}
 
 identifier -> [a-z]:+ {%
         data => data[0].join('')

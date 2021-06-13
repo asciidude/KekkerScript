@@ -14,7 +14,7 @@ let declared_vars = [];
 const transpile_js = (statements) => {
     const transpiled = [];
 
-    for (const statement of statements) {
+    for (let statement of statements) {
         if(statement.type === 'variable_assignment') {
             if(declared_vars.indexOf(statement.name) === -1) {
                 transpiled.push(`let ${statement.name} = ${expression_gen(statement.value)};`);
@@ -33,7 +33,15 @@ const transpile_js = (statements) => {
         }
 
         if(statement.type == 'comment') {
-            transpiled.push(`/* ${statement.body} */`)
+            transpiled.push(`/* ${statement.body} */`);
+        }
+
+        if(statement.type == 'return_statement') {
+            if(statement.returned == null) {
+                transpiled.push(`return;`);
+            } else {
+                transpiled.push(`return ${expression_gen(statement.returned)};`);
+            }
         }
     }
 
@@ -54,7 +62,7 @@ const expression_gen = (expression) => {
 
     if(typeof expression === 'object') {
         if(expression.type === 'binary_expression') {
-            if(!lookup(expression.operator)) {
+            if(!lookup(expression.operator, translated_operators)) {
                 throw TypeError(`ERR!: ${expression.operator} does not exist or is not translated`);
             }
 
@@ -65,9 +73,9 @@ const expression_gen = (expression) => {
     }
 }
 
-const lookup = async(name) => {
+const lookup = async(name, arr) => {
     for(var i = 0, len = arr.length; i < len; i++) {
-        if(arr[i].key === name )
+        if(arr[i].key === name)
             return true;
     }
 

@@ -21,6 +21,7 @@ var grammar = {
     {"name": "statement", "symbols": ["print_statement"], "postprocess": id},
     {"name": "statement", "symbols": ["comment"], "postprocess": id},
     {"name": "statement", "symbols": ["while_loop"], "postprocess": id},
+    {"name": "statement", "symbols": ["return"], "postprocess": id},
     {"name": "comment$string$1", "symbols": [{"literal":"<"}, {"literal":"<"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "comment$string$2", "symbols": [{"literal":">"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "comment", "symbols": ["comment$string$1", "__", "unary_expr", "__", "comment$string$2"], "postprocess": 
@@ -107,6 +108,37 @@ var grammar = {
             }
         }
             },
+    {"name": "return$string$1", "symbols": [{"literal":"r"}, {"literal":"e"}, {"literal":"t"}, {"literal":"u"}, {"literal":"r"}, {"literal":"n"}, {"literal":":"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "return", "symbols": ["return$string$1", "__", "expression"], "postprocess": 
+        data => {
+            return {
+                type: "return_statement",
+                return_type: "expression",
+                returned: data[2]
+            }
+        }
+                },
+    {"name": "return$string$2", "symbols": [{"literal":"r"}, {"literal":"e"}, {"literal":"t"}, {"literal":"u"}, {"literal":"r"}, {"literal":"n"}, {"literal":":"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "return", "symbols": ["return$string$2", "__", "statement"], "postprocess": 
+        data => {
+            return {
+                type: "return_statement",
+                return_type: "statement",
+                returned: data[2]
+            }
+        }
+                },
+    {"name": "return$string$3", "symbols": [{"literal":"r"}, {"literal":"e"}, {"literal":"t"}, {"literal":"u"}, {"literal":"r"}, {"literal":"n"}, {"literal":":"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "return$string$4", "symbols": [{"literal":"n"}, {"literal":"o"}, {"literal":"n"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "return", "symbols": ["return$string$3", "__", "return$string$4"], "postprocess": 
+        data => {
+            return {
+                type: "return_statement",
+                return_type: "statement",
+                returned: null
+            }
+        }
+                },
     {"name": "identifier$ebnf$1", "symbols": [/[a-z]/]},
     {"name": "identifier$ebnf$1", "symbols": ["identifier$ebnf$1", /[a-z]/], "postprocess": function arrpush(d) {return d[0].concat([d[1]]);}},
     {"name": "identifier", "symbols": ["identifier$ebnf$1"], "postprocess": 
