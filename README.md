@@ -1,10 +1,10 @@
-﻿# Compiling KekkerScript
+# Compiling KekkerScript
 * First, run `npm i -g .` to globally install KekkerScript - do not include: examples dir, main.kek, main.kek.js
 * After, you can then use `kekkerscript` or `kek`. Default file will be `main.kek` and use strict will be set to `false`
 * To change these values, use `kek --set-file [path] --use-strict [true/false]`
 
 # KekkerScript Documentation
-v. rw1.0.1
+v. rw1.2.0
 
 For now, our documentation will be held on
 GitHub. We will, later on in the future, migrate to
