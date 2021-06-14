@@ -1,9 +1,12 @@
 const parse = require('./parser');
+const util = require('util');
 const { stringify } = require('./library');
 
 class Context {
 	constructor() {
-		this.header = [];
+		this.header = [
+			`/* Transpiled with KekkerScript | https://github.com/pxpcandy/kekkerscript */\n`
+		];
 		this.variables = [];
 	}
 }
@@ -48,7 +51,28 @@ function transpile(tree, ctx = new Context()) {
 			}
 			return result.join('');
 		}
+		case 'postfix': {
+			let result = [transpile(tree.items[0], ctx)];
+			for (let i = 1; i < tree.items.length; i++) {
+				if (tree.items[i].rule === 'call') {
+					result.push(transpile(tree.items[i], ctx));
+				} else {
+					result.push(tree.items[i].text);
+				}
+			}
+			return result.join('');
+		}
+		case 'call': {
+			return `(${tree.items.map(item => transpile(item, ctx)).join(', ')})`;
+		}
 		case 'atom': {
+			if (tree.items[0].rule === 'string') {
+				if (tree.items[0].text.startsWith('"')) {
+					return util.inspect(tree.items[0].text.slice(1, -1).replace(/\\(\\|")/, '$1'));
+				} else {
+					return util.inspect(tree.items[0].text.slice(1, -1).replace(/\\(\\|')/, '$1'));
+				}
+			}
 			return tree.items[0].text;
 		}
 		case 'while': {

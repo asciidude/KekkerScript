@@ -1,3 +1,2 @@
-import "sep" as "separator" from "path"
-
-print: separator
+set ayo -> 5.0
+print: "lol what " + ayo + "\"'"

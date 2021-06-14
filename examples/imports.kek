@@ -1,4 +1,4 @@
-<< Import PI function from math module (node) and print >>
-import "PI" from "math"
+<< Import path module and resolve the current path >>
+import "resolve" from "path"
 
-print: PI
+print: resolve(".")
