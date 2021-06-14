@@ -1,6 +1,7 @@
 const parse = require('./parser');
 const util = require('util');
 const { stringify } = require('./library');
+const { strictUse } = require('./index');
 
 class Context {
 	constructor() {

@@ -1,7 +1,6 @@
 node_modules
 package-lock.json
 
-# examples/transpiled files
-main.kek.js
+# examples | transpiled
 examples/count.kek.js
 examples/imports.kek.js

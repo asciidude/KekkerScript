@@ -1,25 +1,23 @@
 {
   "name": "kekkerscript",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "directories": {
     "example": "examples"
   },
   "dependencies": {
-    "commander": "^7.2.0",
-    "mz": "^2.7.0",
-    "nearley": "^2.20.1"
+    "commander": "^7.2.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "main": "node . --help"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pxpcandy/KekkerScript.git"
   },
-  "author": "",
+  "author": "pxpcandy",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pxpcandy/KekkerScript/issues"

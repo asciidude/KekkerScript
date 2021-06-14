@@ -1,6 +1,6 @@
 @parser;
 	main: statement*;
-	statement: import | set | print | while | return | comment;
+	statement: import | set | print | while | return | comment | function;
 	comment: lexer.comment;
 	import: ~'import' string (~'as' string)? ~'from' string;
 	while: ~'while' expression ~'(' statement* ~')';
@@ -16,6 +16,8 @@
 	prefix: ('+' | '-')* postfix;
 	postfix: atom call*;
 	atom: number | string | identifier | boolean | ~'(' expression ~')';
+	function: ~'fn' identifier arguments ~'(' statement* ~')';
+	arguments: (identifier (~',' identifier)*)?;
 
 @lexer;
 	set: 'set';
@@ -23,6 +25,7 @@
 	while: 'while';
 	return: 'return';
 	import: 'import';
+	function: 'fn';
 	as: 'as';
 	from: 'from';
 	boolean: 'true' | 'false';

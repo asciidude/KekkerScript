@@ -1,0 +1,7 @@
+<< Create a function to print hello world >>
+
+fn hello(test) (
+    print: "hello world " + test
+)
+
+hello('test')

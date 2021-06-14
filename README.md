@@ -1,11 +1,11 @@
-# Compiling KekkerScript
-* First, run `npm i -g .` to globally install KekkerScript - do not include: examples dir, main.kek, main.kek.js
+﻿# Compiling KekkerScript
+* First, run `npm i -g kekkerscript` to globally install KekkerScript
 * After, you can then use `kekkerscript` or `kek`. Default file will be `main.kek` and use strict will be set to `false`
 * To change these values, use `kek --set-file [path] --use-strict [true/false]`
 
-# KekkerScript Documentation
-v. rw1.2.0
+**use-strict is currently ignored**
 
+# KekkerScript Documentation
 For now, our documentation will be held on
 GitHub. We will, later on in the future, migrate to
 [ReadTheDocs](https://www.readthedocs.io)
@@ -22,6 +22,7 @@ KekkerScript is a transpiler that transpiles to JavaScript.
 `<< mainfile >>`: comments, will be transpiled and generated in ast<br>
 `true/false`: these are booleans, yes or no values basically<br>
 `return: fn()`: return something<br>
-`"hello world" or 'hello world'`: string values, strings are text. duh.<br>
+`"hello world" or 'hello world'`: string literals<br>
 `import "export" as "thing" from "module"`: import an export from a module, **these are node modules**<br>
 `foo()`: call a function, actually creating functions are being worked on as we speak<br>
+`fn fnName()`: creates a function, currently broken
