@@ -32,7 +32,6 @@ Suggestions:
 
 # Contribution rules
 * Do not credit yourself, you will not be credited for changes to the language
-* Do not break the code, otherwise you will be banned
 * Do not inject any malicious code into the transpiler
 * Do not fetch any data from any website
 * Do not message any contributors complaining about PR denial, you will be banned from PRs
