@@ -8,8 +8,9 @@ through CLI and transpiler run function.
 Index
 ~~~~~
 .. toctree::
-    :maxdepth: 7
+    :maxdepth: 8
 
+    index
     install
     compiling_kekkerscript
     transpiler_functions
