@@ -1,17 +1,17 @@
 {
   "name": "kekkerscript",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
-  "directories": {
-    "example": "examples"
-  },
   "dependencies": {
     "commander": "^7.2.0"
   },
+  "bin": {
+    "kek": "./index.js"
+  },
   "devDependencies": {},
   "scripts": {
-    "main": "node . --help"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
