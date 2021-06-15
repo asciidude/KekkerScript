@@ -25,4 +25,4 @@ KekkerScript is a transpiler that transpiles to JavaScript.
 `"hello world" or 'hello world'`: string literals<br>
 `import "export" as "thing" from "module"`: import an export from a module, **these are node modules**<br>
 `foo()`: call a function, actually creating functions are being worked on as we speak<br>
-`fn fnName()`: creates a function, currently broken
+`fn fnName(parameters)`: creates a function with parameters
