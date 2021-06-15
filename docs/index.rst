@@ -11,10 +11,3 @@ Index
     :maxdepth: 8
 
     index
-    install
-    compiling_kekkerscript
-    transpiler_functions
-    expressions
-    statements
-    operators
-    atomic_operations
