@@ -1,6 +1,6 @@
 KekkerScript Statements
 -----------------------
-expression                    | Expressions are equalities, see in **equalities** secrtion of this page
+expression                    | Expressions are equalities, see in **equalities** section of this page
 
 fn func(paremeters) ( body )  | This creates a function
 
