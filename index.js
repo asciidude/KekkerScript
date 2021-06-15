@@ -2,6 +2,8 @@
 const commander = require('commander');
 const fs = require('fs');
 const path = require('path');
+const parse = require('./parser');
+const transpile = require('./transpiler');
 const version = 'rw1.2.1'
 
 commander
@@ -18,13 +20,30 @@ commander
 		    if (!fs.existsSync(filepath))
 		    	throw new Error('Cannot run file that does not exist.');
 
-        const parse = require('./parser');
-        const transpile = require('./transpiler');
         const ast = parse(fs.readFileSync(filepath, 'utf8'));
-
         const result = transpile(ast);
+        
         fs.writeFileSync(`${filepath}.js`, result, 'utf-8');
         require(`${filepath}.js`);
     });
 
 commander.parse(process.argv);
+
+const run = (r_setFile) => {
+    let filepath = path.resolve(r_setFile);
+    if(!r_setFile == null)
+        if(!filepath.endsWith('.kek'))
+        throw new Error('Cannot run file that does not end with .kek')
+    else
+        filepath = path.join(__dirname, 'main.kek')
+    if (!fs.existsSync(filepath))
+    	throw new Error('Cannot run file that does not exist.');
+
+    const ast = parse(fs.readFileSync(filepath, 'utf8'));
+    const result = transpile(ast);
+
+    fs.writeFileSync(`${filepath}.js`, result, 'utf-8');
+    require(`${filepath}.js`);
+}
+
+module.exports = { run }
