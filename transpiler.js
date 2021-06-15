@@ -1,12 +1,11 @@
 const parse = require('./parser');
 const util = require('util');
 const { stringify } = require('./library');
-const { strictUse } = require('./index');
 
 class Context {
 	constructor() {
 		this.header = [
-			`/* Transpiled with KekkerScript | https://github.com/pxpcandy/kekkerscript */\n`
+			`/* Transpiled with KekkerScript | https://github.com/pxpcandy/kekkerscript */\n'use strict';\n`
 		];
 		this.variables = [];
 	}
@@ -16,11 +15,14 @@ function transpile(tree, ctx = new Context()) {
 	if (tree.parser === undefined) throw new Error('Can only transpile parser rules.');
 	switch (tree.rule) {
 		case 'main': {
-			const result = tree.items.map(item => transpile(item, ctx)).join('\n');
+			const result = tree.items.map(item => transpile(item, ctx)).join('\n\n');
 			return ctx.header.join('\n') + '\n' + result;
 		}
 		case 'statement': case 'expression': {
 			return transpile(tree.items[0], ctx);
+		}
+		case 'fn': {
+			return `const ${tree.items[0].text} = (${tree.items[1].items.map(item => item.text).join(', ')}) => {${tree.items.slice(1).map(item => transpile(item, ctx).split('\n').map(line => '\t' + line).join('\n')).join('\n')}\n}`;
 		}
 		case 'set': {
 			const id = tree.items[0].text;
@@ -38,6 +40,9 @@ function transpile(tree, ctx = new Context()) {
 			}
 			return result.join(' ');
 		}
+		case 'arguments': {
+			return tree.items.splice(1).join(' ');
+		};
 		case 'comparison': case 'additive': case 'multiplicative': {
 			let result = [transpile(tree.items[0], ctx)];
 			for (let i = 1; i < tree.items.length; i += 2) {

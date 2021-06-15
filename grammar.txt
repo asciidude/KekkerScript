@@ -1,11 +1,11 @@
 @parser;
 	main: statement*;
-	statement: import | set | print | while | return | comment | function;
+	statement: import | set | print | while | return | comment | fn | expression;
 	comment: lexer.comment;
 	import: ~'import' string (~'as' string)? ~'from' string;
 	while: ~'while' expression ~'(' statement* ~')';
 	print: ~'print' ~':' expression;
-	set: ~'set' identifier ~'->' expression;
+	set: ~'set' identifier pointerRight expression;
 	return: ~'return' ~':' (expression | statement)?;
 	expression: equality;
 	call: ~'(' (expression (~',' expression)*)? ~')';
@@ -16,8 +16,8 @@
 	prefix: ('+' | '-')* postfix;
 	postfix: atom call*;
 	atom: number | string | identifier | boolean | ~'(' expression ~')';
-	function: ~'fn' identifier arguments ~'(' statement* ~')';
-	arguments: (identifier (~',' identifier)*)?;
+	fn: ~'fn' identifier arguments ~'(' statement* ~')';
+	arguments: ~'(' (identifier (~',' identifier)*)? ~')';
 
 @lexer;
 	set: 'set';
@@ -25,13 +25,14 @@
 	while: 'while';
 	return: 'return';
 	import: 'import';
-	function: 'fn';
+	fn: 'fn';
 	as: 'as';
 	from: 'from';
 	boolean: 'true' | 'false';
 	comment: /<<[^]*?>>/;
 	string: /"(?:[^"\\]|\\["\\])*"/ | /'(?:[^'\\]|\\['\\])*'/;
-	arrow: '->';
+	pointerRight: '->';
+	pointerLeft: '<-';
 	lteq: '<=';
 	gteq: '>=';
 	neq: '!=';

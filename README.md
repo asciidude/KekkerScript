@@ -21,7 +21,7 @@ KekkerScript is a transpiler that transpiles to JavaScript.
 `while variable <= 12.5`: while a condition is true, loop over body<br>
 `<< mainfile >>`: comments, will be transpiled and generated in ast<br>
 `true/false`: these are booleans, yes or no values basically<br>
-`return: fn()`: return something<br>
+`return: foo()`: return something<br>
 `"hello world" or 'hello world'`: string literals<br>
 `import "export" as "thing" from "module"`: import an export from a module, **these are node modules**<br>
 `foo()`: call a function, actually creating functions are being worked on as we speak<br>

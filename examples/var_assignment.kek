@@ -1,0 +1,4 @@
+<< Assign variable a to the string literal "a" and print a >>
+
+set a -> "a"
+print: a

@@ -1,7 +1,7 @@
-<< Create a function to print hello world >>
+<< Create a function to print "hello world!" >>
 
 fn hello(test) (
-    print: "hello world " + test
+    print: "hello " + test
 )
 
-hello('test')
+hello('world!')
