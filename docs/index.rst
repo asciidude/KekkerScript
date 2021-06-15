@@ -7,6 +7,13 @@ through CLI and transpiler run function.
 
 Index
 ~~~~~
-* work
-* in
-* progress!
+.. toctree::
+    :maxdepth: 7
+
+    atomic_operations
+    compiling_kekkerscript
+    expressions
+    install
+    operators
+    statements
+    transpiler_functions
