@@ -2,7 +2,7 @@
 
 set test -> 1
 
-while test <= 10 (
+while test != 10 (
     print: test
     set test -> test + 1
 )

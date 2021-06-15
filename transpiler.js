@@ -12,7 +12,6 @@ class Context {
 }
 
 function transpile(tree, ctx = new Context()) {
-	if (tree.parser === undefined) throw new Error('Can only transpile parser rules.');
 	switch (tree.rule) {
 		case 'main': {
 			const result = tree.items.map(item => transpile(item, ctx)).join('\n\n');
@@ -28,21 +27,24 @@ function transpile(tree, ctx = new Context()) {
 			const id = tree.items[0].text;
             if (!ctx.variables.includes(id)) {
 				ctx.variables.push(id);
-			    return `let ${id} = ${transpile(tree.items[1], ctx)};`;
+			    return `let ${id} = ${transpile(tree.items[2], ctx)};`;
             } else {
-			    return `${id} = ${transpile(tree.items[1], ctx)};`;
+			    return `${id} = ${transpile(tree.items[2], ctx)};`;
             }
 		}
 		case 'equality': {
 			let result = [transpile(tree.items[0], ctx)];
 			for (let i = 1; i < tree.items.length; i += 2) {
-				result.push(tree.items[i].text === '=' ? '==' : tree.items[i].text, transpile(tree.items[i + 1], ctx));
+				result.push(tree.items[i].text === '=' ? '===' : tree.items[i].text, transpile(tree.items[i + 1], ctx));
 			}
 			return result.join(' ');
 		}
 		case 'arguments': {
 			return tree.items.splice(1).join(' ');
-		};
+		}
+		case 'pointerRight': case 'pointerLeft': {
+            return tree.items[0];
+        };
 		case 'comparison': case 'additive': case 'multiplicative': {
 			let result = [transpile(tree.items[0], ctx)];
 			for (let i = 1; i < tree.items.length; i += 2) {
