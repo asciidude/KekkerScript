@@ -10,10 +10,10 @@ Index
 .. toctree::
     :maxdepth: 7
 
-    atomic_operations
-    compiling_kekkerscript
-    expressions
     install
-    operators
-    statements
+    compiling_kekkerscript
     transpiler_functions
+    expressions
+    statements
+    operators
+    atomic_operations
