@@ -4,6 +4,8 @@ expression                    | Expressions are equalities, see in **equalities*
 
 fn func(paremeters) ( body )  | This creates a function
 
+new Class()                   | Create class object
+
 func()                        | This calls a function
 
 << comment >>                 | Comments will be generated through the AST and transpiled

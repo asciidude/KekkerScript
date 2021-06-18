@@ -1,0 +1,4 @@
+<< Lets objectify a class, importing Class from test_class.js! >>
+import "Class" from "./test_class.js"
+
+set hi -> new Class("world")

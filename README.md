@@ -3,3 +3,6 @@
 # KekkerScript Documentation
 We have migrated to RTD! The documentation can be found at<br>
 [ReadTheDocs](http://kekkerscript.rtfd.io/)
+
+# Change-log
+* Nothing added

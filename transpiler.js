@@ -23,6 +23,9 @@ function transpile(tree, ctx = new Context()) {
 		case 'fn': {
 			return `const ${tree.items[0].text} = (${tree.items[1].items.map(item => item.text).join(', ')}) => {${tree.items.slice(1).map(item => transpile(item, ctx).split('\n').map(line => '\t' + line).join('\n')).join('\n')}\n}`;
 		}
+		case 'new': {
+			return `new ${tree.items[0]}(${tree.items[1].items.map(item => item.text).join(', ')})`;
+		}
 		case 'set': {
 			const id = tree.items[0].text;
             if (!ctx.variables.includes(id)) {
